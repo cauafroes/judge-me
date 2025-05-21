@@ -14,8 +14,6 @@ export default function Home() {
     }
   }, [status, router]);
 
-  console.log(status)
-
   return (
     //     <div className="min-h-screen bg-gradient-to-br from-[#1e1e2f] via-[#2b2b45] to-[#1e1e2f] text-white flex flex-col items-center justify-center px-4 py-10">
     //     <div className="w-full max-w-3xl">

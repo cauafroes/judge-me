@@ -11,12 +11,7 @@ export default async function Page() {
         redirect('/api/auth/signin');
     }
 
-    let tracks = []
-    try {
-        const tracks = await getTopTracks(session.accessToken)
-    } catch (err) {
-        console.log(err)
-    }
+    const tracks = await getTopTracks(session.accessToken)
 
-    return < MusicJudgePage tracks={tracks} />;
+    return < MusicJudgePage tracks={tracks.items} />;
 }

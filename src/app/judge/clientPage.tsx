@@ -1,10 +1,9 @@
 'use client'
-import { authOptions } from '../api/auth/[...nextauth]/route';
+// import { authOptions } from '../api/auth/[...nextauth]/route';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
 export default function MusicJudgePage({ tracks }: { tracks: [] }) {
-    console.log(tracks)
     const [judgment, setJudgment] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -14,50 +13,50 @@ export default function MusicJudgePage({ tracks }: { tracks: [] }) {
     const judgmentTone: 'good' | 'bad' = 'bad';
 
     const fetchStreamingJudgment = async () => {
-        try {
-            setLoading(true);
-            setError('');
-            setJudgment('');
+        // try {
+        setLoading(true);
+        setError('');
+        setJudgment('');
 
-            const res = await fetch('/api/judge', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    tracks,
-                    debochadoLevel,
-                    judgmentTone,
-                }),
-            });
+        const res = await fetch('/api/judge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tracks,
+                debochadoLevel,
+                judgmentTone,
+            }),
+        });
 
-            if (!res.body) {
-                throw new Error('No response body');
-            }
-
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            let done = false;
-
-            while (!done) {
-                const { value, done: streamDone } = await reader.read();
-                done = streamDone;
-
-                if (value) {
-                    const chunk = decoder.decode(value);
-                    setJudgment(prev => prev + chunk);
-                    judgmentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-
-        } catch (err) {
-            console.error('Judgment error:', err);
-            setError(`Failed to get judgment: ${axios.isAxiosError(err) ?
-                err.response?.data?.message || err.message :
-                'Unknown error'}`);
-        } finally {
-            setLoading(false);
+        if (!res.body) {
+            throw new Error('No response body');
         }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+
+        while (!done) {
+            const { value, done: streamDone } = await reader.read();
+            done = streamDone;
+
+            if (value) {
+                const chunk = decoder.decode(value);
+                setJudgment(prev => prev + chunk);
+                judgmentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // } catch (err) {
+        //     console.error('Judgment error:', err);
+        //     setError(`Failed to get judgment: ${axios.isAxiosError(err) ?
+        //         err.response?.data?.message || err.message :
+        //         'Unknown error'}`);
+        // } finally {
+        // setLoading(false);
+        // }
     };
 
     useEffect(() => {

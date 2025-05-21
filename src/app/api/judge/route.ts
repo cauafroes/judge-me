@@ -1,7 +1,5 @@
-import { judgeMusicTaste } from "@/app/lib/gptJudge";
-import { NextResponse } from "next/server";
 import { OpenAI } from "openai";
-export const runtime = 'edge'; // Important for streaming!
+export const runtime = 'edge';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -41,7 +39,7 @@ export async function POST(req: Request) {
       },
       {
         role: "user",
-        content: `tracks: ${tracks.map((t, i) => `${i + 1}. "${t.name}" by ${t.artist}`).join("\n")}, debochadoLevel: ${debochadoLevel}, judgmentTone: ${judgmentTone}`
+        content: `tracks: ${tracks.map((t, i) => `${i + 1}. "${t.name}" by ${t.artists[0].name}`).join("\n")}, debochadoLevel: ${debochadoLevel}, judgmentTone: ${judgmentTone}`
       }
     ];
 
